@@ -92,23 +92,24 @@ all_var_path = r"E:\BITS\Yr 3 Sem 2\CE F376 Civil Climate change SOP\Drought Stu
 all_var = pd.read_csv(all_var_path)
 all_var_tensor = torch.from_numpy(all_var.values).float()
 
+for i in range(10):
+    print()
+    nos_samples = all_var_tensor.shape[0]
+    nos_validation_samples = int(0.2 * nos_samples)
+    shuffled_indices = torch.randperm(nos_samples)
+    train_indices = shuffled_indices[:-nos_validation_samples]
+    validation_indices = shuffled_indices[-nos_validation_samples:]
 
-nos_samples = all_var_tensor.shape[0]
-nos_validation_samples = int(0.2 * nos_samples)
-shuffled_indices = torch.randperm(nos_samples)
-train_indices = shuffled_indices[:-nos_validation_samples]
-validation_indices = shuffled_indices[-nos_validation_samples:]
+    x_train = normalize(all_var_tensor[train_indices])
+    x_test = normalize(all_var_tensor[validation_indices])
 
-x_train = normalize(all_var_tensor[train_indices])
-x_test = normalize(all_var_tensor[validation_indices])
+    y_train = rain_tensor[train_indices]
+    y_test = rain_tensor[validation_indices]
 
-y_train = rain_tensor[train_indices]
-y_test = rain_tensor[validation_indices]
-
-training_loop(
-    nos_epochs=5000,
-    x_train=x_train,
-    x_test=x_test,
-    y_train=y_train,
-    y_test=y_test,
-)
+    training_loop(
+        nos_epochs=5000,
+        x_train=x_train,
+        x_test=x_test,
+        y_train=y_train,
+        y_test=y_test,
+    )

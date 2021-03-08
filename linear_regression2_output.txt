@@ -1,0 +1,62 @@
+# Epoch = the iteration at which min value is reached
+
+Loss Type  Epoch      Loss
+MSETrain   4999       8322.6533203125
+MSETest    1122       5752.5078125
+R2Train    4999       -0.0015513896942138672
+R2Test     1122       -0.0006531476974487305
+
+Loss Type  Epoch      Loss
+MSETrain   4999       8175.61279296875
+MSETest    1130       6387.74267578125
+R2Train    4999       -0.001489400863647461
+R2Test     1130       -0.0011249780654907227
+
+Loss Type  Epoch      Loss
+MSETrain   4995       8233.59765625
+MSETest    1178       6163.24267578125
+R2Train    4995       -0.001483321189880371
+R2Test     1178       -0.0010870695114135742
+
+Loss Type  Epoch      Loss
+MSETrain   4998       7955.90771484375
+MSETest    1432       7431.30078125
+R2Train    4996       -0.0013293027877807617
+R2Test     1431       -0.0016236305236816406
+
+Loss Type  Epoch      Loss
+MSETrain   4998       7100.5
+MSETest    4998       10961.203125
+R2Train    4998       -0.0014734268188476562
+R2Test     4998       -0.020796775817871094
+
+Loss Type  Epoch      Loss
+MSETrain   4995       8390.2001953125
+MSETest    1881       5755.08203125
+R2Train    4995       -0.0012884140014648438
+R2Test     1879       -0.0020629167556762695
+
+Loss Type  Epoch      Loss
+MSETrain   4993       7624.20166015625
+MSETest    4999       8823.357421875
+R2Train    4993       -0.001490950584411621
+R2Test     4999       -0.0009675025939941406
+
+Loss Type  Epoch      Loss
+MSETrain   4999       8677.6728515625
+MSETest    800        3811.671875
+R2Train    4999       -0.0015894174575805664
+R2Test     800        -0.0007959604263305664
+
+Loss Type  Epoch      Loss
+MSETrain   4997       8407.8095703125
+MSETest    1294       5569.32275390625
+R2Train    4997       -0.0014350414276123047
+R2Test     1294       -0.0012128353118896484
+
+Loss Type  Epoch      Loss
+MSETrain   4998       7190.16845703125
+MSETest    4996       10561.115234375
+R2Train    4998       -0.0014723539352416992
+R2Test     4996       -0.0017077922821044922
+>>>
