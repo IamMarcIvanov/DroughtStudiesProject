@@ -8,6 +8,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;As can be seen the testing and training losses fluctuate a lot over iterations and relative to each other.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Thus the monthly data is insufficient.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Additionally, linear regression is unable to capture the subtleties in the data.<br/>
+
+
 **File**: 8Mar2021PCA1.py<br/>
 **What it does**: <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;does PCA on the following variables: HURS HUSS PSL TAS CLT ZG500 VAS UAS<br/>
