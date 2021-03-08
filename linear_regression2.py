@@ -64,14 +64,14 @@ def plot_and_print_loss(nos_epochs, train_loss, test_loss, loss_type):
         # ind = train_loss.index(loss1)
         # print("{:^10} {:<30} {:<30}".format(ind + 1, loss1, loss2))
     """below is plotting loss"""
-    # epoch_list = list(range(1, nos_epochs + 1))
-    # plt.plot(epoch_list, train_loss, "r")
-    # plt.plot(epoch_list, test_loss, "b")
-    # plt.xlabel("epochs")
-    # plt.ylabel("losses")
-    # plt.legend(["train loss", "test loss"])
-    # plt.title(loss_type + " Loss")
-    # plt.show()
+    epoch_list = list(range(1, nos_epochs + 1))
+    plt.plot(epoch_list, train_loss, "r")
+    plt.plot(epoch_list, test_loss, "b")
+    plt.xlabel("epochs")
+    plt.ylabel("losses")
+    plt.legend(["train loss", "test loss"])
+    plt.title(loss_type + " Loss")
+    plt.show()
     """below is printing min loss and epoch"""
     train_loss_abs = [abs(x) for x in train_loss]
     test_loss_abs = [abs(x) for x in test_loss]
