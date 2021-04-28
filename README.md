@@ -21,3 +21,23 @@
 &nbsp;&nbsp;&nbsp;&nbsp;8Mar2021PCA1_output.txt<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;prints the explained variance as a percentage<br/>
 **Conclusion**: PCA is giving wildly different results solely based on the order, thus it cannot be relied on to give correct results.<br/>
+
+
+**File**: lin_reg_stats.py<br/>
+**What it does**: <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Data Preprocessing for 1st point (16.5 N 81.75 E) in IMD and INM-CM4-8 data.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Linear Regression and Polynomial Regression<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Run suite of Statistical tests through statmodels<br/>
+**Output**: <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;R2 score and results of statistical tests<br/>
+**Conclusion**: Linear regression and Polynomial regression give TERRIBLE results (r2 max = 0.56)<br/>
+
+
+**File**: stats2.py<br/>
+**What it does**: <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Data Preprocessing for 1st point (16.5 N 81.75 E) in IMD and EC-Earth3 data.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Linear Regression and Polynomial Regression<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Run suite of Statistical tests through statmodels<br/>
+**Output**: <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;R2 score and results of statistical tests<br/>
+**Conclusion**: Linear regression and Polynomial regression give TERRIBLE results (r2 max = 0.56)<br/>
