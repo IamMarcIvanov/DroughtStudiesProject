@@ -95,11 +95,19 @@ print(f'The R2 Score is: {r2_score(y_test, predictions)}')
 
 # %%
 # Polynomial Regression with variable degree
-model = make_pipeline(PolynomialFeatures(degree=3),LinearRegression())
-model.fit(X_train, y_train)
-predictions = model.predict(X_test)
-predictions = np.where(predictions<=0, 0, predictions)
-print(f'The R2 Score is: {r2_score(y_test, predictions)}')
+# for degree = 2 -> 0.05325821822687249
+# for degree = 3 -> 0.05630877341597906
+# for degree = 4 -> 0.049656805504937784
+# for degree = 5 -> 0.02727273524532825
+# for degree = 6 -> 0.053098448690447775
+# for degree = 7 -> 0.05035674414188229
+# for degree = 8 -> 0.03664462816877734
+for degree in range(7, 9):
+    model = make_pipeline(PolynomialFeatures(degree=degree),LinearRegression())
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    predictions = np.where(predictions<=0, 0, predictions)
+    print(f'The R2 Score is: {r2_score(y_test, predictions)}')
 
 # %%
 # Perform Linear Regression using Ordinary Least Squares and generate a hell of a lot of statistics
