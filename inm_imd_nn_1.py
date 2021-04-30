@@ -11,11 +11,9 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
-import winsound
 from rich_console import console
 from rich.table import Table
 from tqdm import tqdm, trange
-from rich.live import Live
 import time
 from rich.traceback import install
 install()
@@ -101,10 +99,10 @@ class NN(nn.Module):
 # %%
 # torch setup
 learning_rate = 0.001
-num_epochs = 50000
-batch_size = 1000
-n_hidden_layers = 3
-n_units_hidden_layers = 20
+num_epochs = 5000
+batch_size = 100000
+n_hidden_layers = 6
+n_units_hidden_layers = 200
 
 model = NN(X_train.shape[1], 1, n_hidden_layers, n_units_hidden_layers).to(device)
 criterion = nn.SmoothL1Loss()
@@ -150,7 +148,7 @@ for epoch in trange(num_epochs):
             table.add_row(str(epoch * batch_size), 
                         str(loss.item()), 
                         str(end_time - start_time),
-                        str(r2_score(predictions, y_test)),
+                        str(r2_score(y_test, predictions)),
                         str(n_hidden_layers),
                         str(n_units_hidden_layers),
                         str(num_epochs),
@@ -158,4 +156,11 @@ for epoch in trange(num_epochs):
                         str(learning_rate))
 console.log(table)
 predictions = model(xTest).to('cpu').detach().numpy()
-console.log('final r2 score: ', r2_score(predictions, y_test))
+console.log('final r2 score: ', r2_score(y_test, predictions))
+
+# %%
+# plot the loss
+plt.plot(list(range(len(loss))), loss)
+plt.xlabel('iterations in 10^9')
+plt.ylabel('loss')
+plt.show()
