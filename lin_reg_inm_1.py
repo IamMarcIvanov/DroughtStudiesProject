@@ -94,14 +94,18 @@ with open('imd.txt', 'w') as f:
 
 # %%
 # Linear Regression
+# Results:
+# with and without multioutput='variance_weighted' R2 = 0.020103375252638833, but with standard scaling
+# with and without without multioutput='variance_weighted' and without standard scaling -> 0.04127805202148482
 model = LinearRegression()
 model.fit(X_train, y_train)
 predictions = model.predict(X_test)
 predictions = np.where(predictions<=0, 0, predictions)
-print(f'The R2 Score is: {r2_score(y_test, predictions)}')
+print('The R2 Score is: {}'.format(r2_score(y_test, predictions, multioutput='variance_weighted')))
 
 # %%
-# Polynomial Regression with variable degree
+# Polynomial Regression with variable degree and no standard scaling
+# with and without standard scaling
 # for degree = 2 -> 0.05325821822687249
 # for degree = 3 -> 0.05630877341597906
 # for degree = 4 -> 0.049656805504937784
@@ -109,12 +113,18 @@ print(f'The R2 Score is: {r2_score(y_test, predictions)}')
 # for degree = 6 -> 0.053098448690447775
 # for degree = 7 -> 0.05035674414188229
 # for degree = 8 -> 0.03664462816877734
-for degree in range(7, 9):
+
+# with and without multioutput='variance_weighted' and scaling done
+# for degree = 2 -> 0.029707449653142207
+# for degree = 3 -> 0.030248505763899147
+# for degree = 4 -> 0.026548069982176847
+# for degree = 5 -> 0.005977015889966575
+for degree in range(2, 6):
     model = make_pipeline(PolynomialFeatures(degree=degree),LinearRegression())
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     predictions = np.where(predictions<=0, 0, predictions)
-    print(f'The R2 Score is: {r2_score(y_test, predictions)}')
+    print('The R2 Score is: {}'.format(r2_score(y_test, predictions, multioutput='variance_weighted')))
 
 # %%
 # Perform Linear Regression using Ordinary Least Squares and generate a hell of a lot of statistics
@@ -228,8 +238,8 @@ with open('inm_data_svm_hpp_search.txt', 'a') as f:
         f.write('kernel,C,epsilon,r2,time\n')
         with Live(table, refresh_per_second=0.1):
             for kernel in ['rbf',]:
-                for c in [1000, 3000, 7000, 15000, 25000]:
-                    for eps in [0.01]:
+                for c in [1000]:
+                    for eps in [0.1]:
                         start_time = time.time()
                         regr = SVR(kernel=kernel, C=c, epsilon=eps)
                         regr.fit(X_train, np.ravel(y_train))

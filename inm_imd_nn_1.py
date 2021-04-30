@@ -16,6 +16,7 @@ from rich.table import Table
 from tqdm import tqdm, trange
 import time
 from rich.traceback import install
+from scipy.interpolate import make_interp_spline
 install()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -58,9 +59,13 @@ y['RAINFALL'].fillna(value=y['RAINFALL'].mean(), inplace=True)
 # %%
 # Standardising
 # if we scale then Condition Number is good in statmodels
+X = X.to_numpy()
+y = y.to_numpy()
+"""
 scaler = StandardScaler()
 X = scaler.fit_transform(X[X.columns])
 y = scaler.fit_transform(y)
+"""
 
 # %%
 # generating test and train sets
@@ -98,9 +103,9 @@ class NN(nn.Module):
 
 # %%
 # torch setup
-learning_rate = 0.001
+learning_rate = 0.1
 num_epochs = 5000
-batch_size = 100000
+batch_size = 10000
 n_hidden_layers = 6
 n_units_hidden_layers = 200
 
@@ -126,6 +131,8 @@ table.add_column('learning rate', style='white')
 # %%
 # actual iterations
 losses = []
+scores_list = []
+best_yet_r2 = -10000
 for epoch in trange(num_epochs):
     start_time = time.time()
     
@@ -141,14 +148,18 @@ for epoch in trange(num_epochs):
     optimizer.step()
     
     end_time = time.time()
-    if epoch % 1000 == 0:
-        with torch.no_grad():
-            losses.append(loss.item())
-            predictions = model(xTest).to('cpu').numpy()
+    with torch.no_grad():
+        predictions = model(xTest).to('cpu').numpy()
+        score = r2_score(y_test, predictions, multioutput='variance_weighted')
+        scores_list.append(score)
+        losses.append(loss.item())
+        if score > best_yet_r2:
+            best_yet_r2 = score
+        if epoch % 1000 == 0:
             table.add_row(str(epoch * batch_size), 
                         str(loss.item()), 
                         str(end_time - start_time),
-                        str(r2_score(y_test, predictions, multioutput='variance_weighted')),
+                        str(score),
                         str(n_hidden_layers),
                         str(n_units_hidden_layers),
                         str(num_epochs),
@@ -157,10 +168,24 @@ for epoch in trange(num_epochs):
 console.log(table)
 predictions = model(xTest).to('cpu').detach().numpy()
 console.log('final r2 score: ', r2_score(y_test, predictions, multioutput='variance_weighted'))
+console.log('best r2 score', best_yet_r2)
 
 # %%
 # plot the loss
-plt.plot(list(range(len(losses))), losses)
-plt.xlabel('iterations in 10^9')
+x = list(range(len(losses)))
+X_Y_Spline = make_interp_spline(x, losses)
+y = X_Y_Spline(x)
+plt.plot(x, y)
+plt.xlabel('iterations')
 plt.ylabel('loss')
+plt.show()
+
+# %%
+# plot the r2_score
+x = list(range(len(scores_list)))
+X_Y_Spline = make_interp_spline(x, scores_list)
+y = X_Y_Spline(x)
+plt.plot(x, y)
+plt.xlabel('iterations')
+plt.ylabel('r2 score')
 plt.show()

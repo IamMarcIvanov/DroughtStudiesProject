@@ -1,3 +1,6 @@
 Max iterations is fixed at 10000000. All other parameters take their default values.
 kernel,C,epsilon,r2,time
 rbf,10,0.01,1.4884507778756273e-05,84.86405682563782
+All other parameters take their default values.
+kernel,C,epsilon,r2,time
+rbf,1000,0.1,-0.07330779656149278,14.295895099639893
