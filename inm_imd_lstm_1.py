@@ -67,36 +67,9 @@ y = scaler.fit_transform(y)
 # %%
 # generating test and train sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
-xTest = torch.from_numpy(X_test).to(device).float()
-
-# %%
-# neural network
-class NN(nn.Module):
-    def __init__(self, input_size, output_size, n_hidden_layers, n_units_hidden_layers):
-        super(NN, self).__init__()
-        
-        self.n_hidden_layers = n_hidden_layers
-        self.n_units_hidden_layers = n_units_hidden_layers
-        
-        def linBlock(inDim, outDim):
-            return nn.Sequential(
-                nn.Linear(inDim, outDim),
-                nn.BatchNorm1d(outDim),
-                nn.LeakyReLU())
-        
-        self.in_layer = linBlock(input_size, self.n_units_hidden_layers)
-        self.hidden_layers = nn.ModuleList([linBlock(self.n_units_hidden_layers, self.n_units_hidden_layers)])
-        self.out_layer = nn.Sequential(
-            nn.Linear(self.n_units_hidden_layers, output_size),
-            nn.BatchNorm1d(output_size),
-            nn.Sigmoid())
-    
-    def forward(self, x):
-        out = self.in_layer(x)
-        for layer in self.hidden_layers:
-            out = layer(out)
-        out = self.out_layer(out)
-        return out
+X_test = torch.from_numpy(X_test).to(device).float()
+X_train = torch.from_numpy(X_train).to(device).float()
+y_train = torch.from_numpy(y_train).to(device).float()
 
 # %%
 # torch setup
@@ -129,12 +102,8 @@ losses = []
 for epoch in trange(num_epochs):
     start_time = time.time()
     
-    indices = np.random.choice(len(X_train), batch_size)
-    xTrain = torch.from_numpy(X_train[indices]).to(device).float()
-    yTrain = torch.from_numpy(y_train[indices]).to(device).float()
-    
-    outputs = model(xTrain.float())
-    loss = criterion(outputs, yTrain.float())
+    outputs = model(X_train)
+    loss = criterion(outputs, y_train)
     
     optimizer.zero_grad()
     loss.backward()
@@ -148,11 +117,18 @@ for epoch in trange(num_epochs):
             table.add_row(str(epoch * batch_size), 
                         str(loss.item()), 
                         str(end_time - start_time),
-                        str(r2_score(predictions, y_test)),
+                        str(r2_score(y_test, predictions)),
                         str(num_layers),
                         str(num_epochs),
                         str(dropout),
                         str(learning_rate))
 console.log(table)
 predictions = model(xTest).to('cpu').detach().numpy()
-console.log('final r2 score: ', r2_score(predictions, y_test))
+console.log('final r2 score: ', r2_score(y_test, predictions))
+
+# %%
+# plot the loss
+plt.plot(list(range(len(loss))), loss)
+plt.xlabel('iterations ')
+plt.ylabel('loss')
+plt.show()

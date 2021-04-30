@@ -1,6 +1,7 @@
 # In this one I will be performing statistical analysis and linear regression using statsmodels api on INM-CM4-8 point 1 data.
 
 # %%
+# imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -13,6 +14,8 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn.svm import SVR
 
+# %%
+# data preprocessing
 # X is INM data
 # y is IMD data
 x_path = r'D:\Mimisbrunnr\Data\Civil_Data\INMCM4-8_historical_predictors_Point_1.csv'
@@ -81,18 +84,16 @@ print(X.columns)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 # %%
-# to compare and check whether X and y have the same set of dates
-"""
+# compare and check whether X and y have the same set of dates
 with open('inm-cm4-8.txt', 'w') as f:
     for ind in range(len(X)):
         f.write(str(X['time'].iloc[ind]).split(' ')[0] + '\n')
 with open('imd.txt', 'w') as f:
     for ind in range(len(y)):
         f.write(str(y['TIME'].iloc[ind]).split(' ')[0] + '\n')
-"""
+
 # %%
 # Linear Regression
-
 model = LinearRegression()
 model.fit(X_train, y_train)
 predictions = model.predict(X_test)
@@ -108,14 +109,13 @@ print(f'The R2 Score is: {r2_score(y_test, predictions)}')
 # for degree = 6 -> 0.053098448690447775
 # for degree = 7 -> 0.05035674414188229
 # for degree = 8 -> 0.03664462816877734
-"""
 for degree in range(7, 9):
     model = make_pipeline(PolynomialFeatures(degree=degree),LinearRegression())
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     predictions = np.where(predictions<=0, 0, predictions)
     print(f'The R2 Score is: {r2_score(y_test, predictions)}')
-"""
+
 # %%
 # Perform Linear Regression using Ordinary Least Squares and generate a hell of a lot of statistics
 # Link: https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a

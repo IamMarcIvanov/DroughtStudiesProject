@@ -148,7 +148,7 @@ for epoch in trange(num_epochs):
             table.add_row(str(epoch * batch_size), 
                         str(loss.item()), 
                         str(end_time - start_time),
-                        str(r2_score(y_test, predictions)),
+                        str(r2_score(y_test, predictions, multioutput='variance_weighted')),
                         str(n_hidden_layers),
                         str(n_units_hidden_layers),
                         str(num_epochs),
@@ -156,11 +156,11 @@ for epoch in trange(num_epochs):
                         str(learning_rate))
 console.log(table)
 predictions = model(xTest).to('cpu').detach().numpy()
-console.log('final r2 score: ', r2_score(y_test, predictions))
+console.log('final r2 score: ', r2_score(y_test, predictions, multioutput='variance_weighted'))
 
 # %%
 # plot the loss
-plt.plot(list(range(len(loss))), loss)
+plt.plot(list(range(len(losses))), losses)
 plt.xlabel('iterations in 10^9')
 plt.ylabel('loss')
 plt.show()
