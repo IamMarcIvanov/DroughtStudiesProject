@@ -92,13 +92,13 @@ with open('imd.txt', 'w') as f:
 """
 # %%
 # Linear Regression
-"""
+
 model = LinearRegression()
 model.fit(X_train, y_train)
 predictions = model.predict(X_test)
 predictions = np.where(predictions<=0, 0, predictions)
 print(f'The R2 Score is: {r2_score(y_test, predictions)}')
-"""
+
 # %%
 # Polynomial Regression with variable degree
 # for degree = 2 -> 0.05325821822687249
@@ -222,16 +222,16 @@ table.add_column('R2', style='green')
 table.add_column('time for run (sec)', style='white')
 
 # if below line has file opened as 'w' and file already has useful data, then change open type to 'a'
-with open('inm_data_svm_hpp_search.txt', 'w') as f:
+with open('inm_data_svm_hpp_search.txt', 'a') as f:
     try:
-        f.write('Max iterations is fixed at 10000000. All other parameters take their default values.\n')
+        f.write('All other parameters take their default values.\n')
         f.write('kernel,C,epsilon,r2,time\n')
         with Live(table, refresh_per_second=0.1):
             for kernel in ['rbf',]:
-                for c in [100]:
+                for c in [1000, 3000, 7000, 15000, 25000]:
                     for eps in [0.01]:
                         start_time = time.time()
-                        regr = SVR(kernel=kernel, C=c, epsilon=eps, max_iter=10000000)
+                        regr = SVR(kernel=kernel, C=c, epsilon=eps)
                         regr.fit(X_train, np.ravel(y_train))
                         predictions = regr.predict(X_test)
                         predictions = np.where(predictions<=0, 0, predictions)
