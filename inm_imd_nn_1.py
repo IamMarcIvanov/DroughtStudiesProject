@@ -103,9 +103,9 @@ class NN(nn.Module):
 
 # %%
 # torch setup
-learning_rate = 0.1
-num_epochs = 5000
-batch_size = 10000
+learning_rate = 0.01
+num_epochs = 50000
+batch_size = 1000
 n_hidden_layers = 6
 n_units_hidden_layers = 200
 
@@ -169,12 +169,12 @@ console.log(table)
 predictions = model(xTest).to('cpu').detach().numpy()
 console.log('final r2 score: ', r2_score(y_test, predictions, multioutput='variance_weighted'))
 console.log('best r2 score', best_yet_r2)
+console.log('mean of last 1000 r2 scores', np.mean(scores_list[-1000:]))
 
 # %%
 # plot the loss
-x = list(range(len(losses)))
-X_Y_Spline = make_interp_spline(x, losses)
-y = X_Y_Spline(x)
+y = [np.mean(losses[i - 1000 : i]) if i >=1000 else np.mean(losses[:i]) for i in range(1, len(losses))]
+x = list(range(len(y)))
 plt.plot(x, y)
 plt.xlabel('iterations')
 plt.ylabel('loss')
@@ -182,9 +182,8 @@ plt.show()
 
 # %%
 # plot the r2_score
-x = list(range(len(scores_list)))
-X_Y_Spline = make_interp_spline(x, scores_list)
-y = X_Y_Spline(x)
+y = [np.mean(scores_list[i - 1000 : i]) if i >=1000 else np.mean(scores_list[:i]) for i in range(1, len(scores_list))]
+x = list(range(len(y)))
 plt.plot(x, y)
 plt.xlabel('iterations')
 plt.ylabel('r2 score')
