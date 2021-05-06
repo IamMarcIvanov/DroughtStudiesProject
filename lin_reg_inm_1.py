@@ -44,14 +44,14 @@ X['time'] = X_dtCol
 X['day'] = X['time'].dt.day
 X['month'] = X['time'].dt.month
 X['year'] = X['time'].dt.year
-X.drop(columns=['time'], inplace=True)
+# X.drop(columns=['time'], inplace=True)
 # for y - commented out since y must have just rainfall
 # y_dtCol = pd.to_datetime(y['TIME'], format='%Y-%m-%d %H:%M:%S')
 # y['TIME'] = y_dtCol
 # y['day'] = y['TIME'].dt.day
 # y['month'] = y['TIME'].dt.month
 # y['year'] = y['TIME'].dt.year
-y.drop(columns=['TIME'], inplace=True)
+# y.drop(columns=['TIME'], inplace=True)
 # print(X.head())
 # print(y.head())
 y['RAINFALL'].fillna(value=y['RAINFALL'].mean(), inplace=True)
